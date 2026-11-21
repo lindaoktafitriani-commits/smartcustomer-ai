@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Fuzzy - SmartCustomer AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+            font-size: 26px;
+        }
+
+        .header p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #dbe2ea;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            border-left: 5px solid #2563eb;
+        }
+
+        .score {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 12px 0;
+        }
+
+        .category {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 13px;
+            border-radius: 7px;
+            margin-bottom: 18px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Analisis Potensi Pelanggan</h1>
+            <p>
+                Gunakan metode Fuzzy Inference System (FIS)
+                untuk menganalisis potensi pelanggan berdasarkan
+                pendapatan tahunan dan skor pengeluaran.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Input Data Pelanggan</h2>
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Annual Income (k$)</label>
+                    <input
+                        type="number"
+                        name="annual_income"
+                        min="15"
+                        max="140"
+                        step="any"
+                        placeholder="Contoh: 60"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Spending Score (1–100)</label>
+                    <input
+                        type="number"
+                        name="spending_score"
+                        min="1"
+                        max="100"
+                        step="any"
+                        placeholder="Contoh: 75"
+                        required
+                    >
+                </div>
+
+                <button type="submit">Analisis Pelanggan</button>
+            </form>
+        </div>
+
+        {% if hasil %}
+            <div class="card result">
+                <h2>Hasil Analisis Fuzzy</h2>
+
+                <p>Annual Income: <strong>{{ hasil.income }} k$</strong></p>
+                <p>Spending Score: <strong>{{ hasil.spending }}</strong></p>
+
+                <p>Nilai Potensi Pelanggan:</p>
+                <div class="score">{{ hasil.nilai }}</div>
+
+                <p>Kategori Potensi:</p>
+                <span class="category">{{ hasil.kategori }}</span>
+            </div>
+        {% endif %}
+
+        <a href="/" class="back">← Kembali ke Dashboard</a>
+
+    </div>
+</body>
+</html>

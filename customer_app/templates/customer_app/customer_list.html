@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartCustomer AI | Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f5f9;
+            color: #202b3c;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #111c30;
+            color: white;
+            padding: 28px 18px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: bold;
+            padding: 0 12px 35px;
+            letter-spacing: 0.3px;
+        }
+
+        .brand span {
+            color: #45a4ff;
+        }
+
+        .menu-label {
+            color: #8996aa;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.2px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 7px;
+            color: #c6d0df;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .menu-item.active {
+            background: #243b60;
+            color: white;
+            border-left: 3px solid #45a4ff;
+        }
+
+        .menu-item:hover {
+            background: #1d2d47;
+            color: white;
+        }
+
+        .sidebar-footer {
+            margin-top: 45px;
+            padding: 15px 12px;
+            border-top: 1px solid #29364b;
+            color: #8996aa;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            min-width: 0;
+            margin-left: 245px;
+        }
+
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e9f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+        }
+
+        .topbar-title {
+            font-size: 14px;
+            color: #657187;
+        }
+
+        .admin-label {
+            background: #edf4ff;
+            color: #2765b7;
+            padding: 9px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 35px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .page-heading {
+            margin-bottom: 27px;
+        }
+
+        .page-heading h1 {
+            font-size: 27px;
+            color: #17243a;
+            margin-bottom: 9px;
+        }
+
+        .page-heading p {
+            color: #758197;
+            font-size: 14px;
+        }
+
+        /* STATISTIC CARD */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 27px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 23px;
+            border: 1px solid #e8ecf2;
+            border-radius: 9px;
+            box-shadow: 0 3px 12px rgba(20, 35, 60, 0.03);
+        }
+
+        .stat-label {
+            color: #758197;
+            font-size: 13px;
+            margin-bottom: 13px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #17243a;
+        }
+
+        .stat-note {
+            color: #8490a3;
+            font-size: 12px;
+            margin-top: 9px;
+        }
+
+        .stat-icon {
+            width: 37px;
+            height: 37px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #eaf3ff;
+            color: #2874cf;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        /* TABLE */
+        .table-card {
+            background: white;
+            border: 1px solid #e8ecf2;
+            border-radius: 9px;
+            box-shadow: 0 3px 12px rgba(20, 35, 60, 0.03);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 23px 25px;
+            border-bottom: 1px solid #edf0f4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .table-header h2 {
+            font-size: 17px;
+            color: #17243a;
+        }
+
+        .table-header p {
+            color: #8792a4;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .data-badge {
+            background: #eaf3ff;
+            color: #2765b7;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        thead {
+            background: #f7f9fc;
+        }
+
+        th {
+            color: #647188;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+            padding: 16px 24px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px 24px;
+            border-bottom: 1px solid #edf0f4;
+            font-size: 13px;
+            color: #344156;
+        }
+
+        tbody tr:hover {
+            background: #f7faff;
+        }
+
+        .id-number {
+            font-weight: bold;
+            color: #2874cf;
+        }
+
+        .gender {
+            display: inline-block;
+            background: #f0f3f8;
+            padding: 5px 9px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: #526078;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #1c6bba;
+        }
+
+        .footer {
+            text-align: center;
+            color: #929bad;
+            font-size: 12px;
+            padding: 25px 10px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 850px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+            }
+
+            .content {
+                padding: 25px 18px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 22px 14px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            Smart<span>Customer</span> AI
+        </div>
+
+        <div class="menu-label">MENU UTAMA</div>
+
+        <a href="#data-pelanggan" class="menu-item">
+            ▤ &nbsp; Data Pelanggan
+        </a>
+
+        <a href="{% url 'analysis' %}" class="menu-item">
+            ◉ &nbsp; Analisis Data
+        </a>
+
+        <a href="{% url 'segmentasi' %}" class="menu-item">
+            ◈ &nbsp; Segmentasi
+        </a>
+
+        <a href="{% url 'fis' %}" class="menu-item">
+            ◈ &nbsp; Analisis Fuzzy
+        </a>
+
+        <div class="sidebar-footer">
+            <strong>SmartCustomer AI</strong><br>
+            Sistem Analisis dan Segmentasi Pelanggan Mall
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+            <div class="topbar-title">
+                Dashboard / Data Pelanggan
+            </div>
+
+            <div class="admin-label">
+                ADMINISTRATOR
+            </div>
+        </header>
+
+        <section class="content">
+
+            <div class="page-heading">
+                <h1>Dashboard</h1>
+                <p>
+                    Ringkasan data dan informasi pelanggan mall
+                </p>
+            </div>
+
+            <!-- STATISTICS -->
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-icon">♙</div>
+                    <div class="stat-label">Total Pelanggan</div>
+                    <div class="stat-number">{{ total_customers }}</div>
+                    <div class="stat-note">
+                        Jumlah seluruh data pelanggan
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">▤</div>
+                    <div class="stat-label">Sumber Dataset</div>
+                    <div class="stat-number" style="font-size: 21px;">
+                        Kaggle
+                    </div>
+                    <div class="stat-note">
+                        Mall Customer Segmentation
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">◈</div>
+                    <div class="stat-label">Atribut Data</div>
+                    <div class="stat-number">5</div>
+                    <div class="stat-note">
+                        Variabel dalam dataset pelanggan
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CUSTOMER TABLE -->
+            <div class="table-card" id="data-pelanggan">
+
+                <div class="table-header">
+                    <div>
+                        <h2>Data Pelanggan</h2>
+                        <p>Informasi pelanggan yang tersimpan dalam database</p>
+                    </div>
+
+                    <div class="data-badge">
+                        {{ total_customers }} DATA
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Pelanggan</th>
+                                <th>Gender</th>
+                                <th>Usia</th>
+                                <th>Annual Income (k$)</th>
+                                <th>Spending Score</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for customer in customers %}
+                            <tr>
+                                <td class="id-number">
+                                    #{{ customer.customer_id }}
+                                </td>
+
+                                <td>
+                                    <span class="gender">
+                                        {{ customer.gender }}
+                                    </span>
+                                </td>
+
+                                <td>{{ customer.age }} tahun</td>
+
+                                <td>{{ customer.annual_income }}</td>
+
+                                <td class="score">
+                                    {{ customer.spending_score }}
+                                </td>
+                            </tr>
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    Belum ada data pelanggan.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="footer">
+                SmartCustomer AI &copy; 2026
+                | Sistem Analisis dan Segmentasi Pelanggan Mall
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

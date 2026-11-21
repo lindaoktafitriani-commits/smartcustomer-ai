@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Segmentasi Fuzzy | SmartCustomer AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f9;
+            color: #202b3c;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .back {
+            display: inline-block;
+            background: #17243a;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .back:hover {
+            background: #2874cf;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            font-size: 27px;
+            margin-bottom: 9px;
+        }
+
+        .heading p {
+            color: #758197;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e8ecf2;
+            border-radius: 9px;
+            padding: 25px;
+            margin-bottom: 22px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #758197;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .chart {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat {
+            background: white;
+            padding: 19px;
+            border: 1px solid #e8ecf2;
+            border-radius: 8px;
+        }
+
+        .stat p {
+            color: #758197;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat strong {
+            font-size: 25px;
+            color: #246bc0;
+        }
+
+        .info {
+            background: #f3f7fc;
+            padding: 16px;
+            border-radius: 7px;
+            color: #53647c;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .heading h1 {
+                font-size: 23px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/" class="back">← Kembali ke Dashboard</a>
+
+    <div class="heading">
+        <h1>Segmentasi Pelanggan</h1>
+        <p>
+            Pengelompokan pelanggan menggunakan algoritma Fuzzy C-Means
+        </p>
+    </div>
+
+    <div class="stats">
+
+        {% for cluster, jumlah in cluster_counts.items %}
+        <div class="stat">
+            <p>Cluster {{ cluster }}</p>
+            <strong>{{ jumlah }}</strong>
+            <p style="margin-top: 8px;">Pelanggan</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="card">
+        <h2>Hasil Segmentasi Fuzzy C-Means</h2>
+
+        <p class="description">
+            Setiap titik pada grafik mewakili satu pelanggan.
+            Warna yang berbeda menunjukkan kelompok pelanggan
+            berdasarkan Annual Income dan Spending Score.
+        </p>
+
+        {% if grafik %}
+            <img
+                src="data:image/png;base64,{{ grafik }}"
+                alt="Grafik segmentasi Fuzzy C-Means"
+                class="chart"
+            >
+        {% else %}
+            <p class="description">
+                Belum ada data pelanggan untuk dianalisis.
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Informasi Algoritma</h2>
+
+        <div class="info">
+            <strong>Metode:</strong> Fuzzy C-Means<br>
+            <strong>Jumlah cluster:</strong> 5<br>
+            <strong>Fuzziness (m):</strong> 2<br>
+            <strong>Total pelanggan:</strong> {{ total_customers }}<br>
+            <strong>Fuzzy Partition Coefficient (FPC):</strong> {{ fpc }}
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
